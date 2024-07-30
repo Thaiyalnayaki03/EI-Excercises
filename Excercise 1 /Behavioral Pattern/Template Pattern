@@ -1,0 +1,22 @@
+abstract class Recipe {
+    // Template Method
+    public final void prepareRecipe() {
+        gatherIngredients();
+        prepare();
+        cook();
+        serve();
+    }
+
+    // Common steps for all recipes
+    private void gatherIngredients() {
+        System.out.println("Gathering ingredients.");
+    }
+
+    protected abstract void prepare(); // Varies by recipe
+
+    protected abstract void cook(); // Varies by recipe
+
+    private void serve() {
+        System.out.println("Serving the dish.");
+    }
+}
