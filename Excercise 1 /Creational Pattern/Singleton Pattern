@@ -1,0 +1,66 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+// Singleton Logger Class
+public class Logger {
+    private static Logger instance;
+    private PrintWriter writer;
+
+    // Private constructor to prevent instantiation
+    private Logger() {
+        try {
+            // Open the log file in append mode
+            FileWriter fileWriter = new FileWriter("application.log", true);
+            writer = new PrintWriter(fileWriter);
+            System.out.println("Logger Initialized.");
+        } catch (IOException e) {
+            System.err.println("Failed to initialize Logger.");
+            e.printStackTrace();
+        }
+    }
+
+    // Public method to provide access to the instance
+    public static Logger getInstance() {
+        if (instance == null) {
+            synchronized (Logger.class) {
+                if (instance == null) {
+                    instance = new Logger();
+                }
+            }
+        }
+        return instance;
+    }
+
+    // Method to log messages
+    public void log(String message) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        writer.println(timestamp + " - " + message);
+        writer.flush();
+    }
+
+    // Method to close the logger
+    public void close() {
+        writer.close();
+    }
+}
+
+// Client Code
+public class Main {
+    public static void main(String[] args) {
+        Logger logger1 = Logger.getInstance();
+        Logger logger2 = Logger.getInstance();
+
+        // Log some messages
+        logger1.log("Application started.");
+        logger2.log("Application running.");
+
+        // Check if both instances are the same
+        System.out.println("Are both instances the same? " + (logger1 == logger2));
+
+        // Close the logger
+        logger1.close();
+    }
+}
