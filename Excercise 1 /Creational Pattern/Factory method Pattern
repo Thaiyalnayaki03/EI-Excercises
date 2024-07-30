@@ -1,0 +1,55 @@
+// Product Interface
+interface Document {
+    void open();
+}
+
+// Concrete Products
+class TextDocument implements Document {
+    @Override
+    public void open() {
+        System.out.println("Opening a text document.");
+    }
+}
+
+class Spreadsheet implements Document {
+    @Override
+    public void open() {
+        System.out.println("Opening a spreadsheet.");
+    }
+}
+
+// Creator Class
+abstract class DocumentCreator {
+    public abstract Document createDocument();
+
+    public void openDocument() {
+        Document document = createDocument();
+        document.open();
+    }
+}
+
+// Concrete Creators
+class TextDocumentCreator extends DocumentCreator {
+    @Override
+    public Document createDocument() {
+        return new TextDocument();
+    }
+}
+
+class SpreadsheetCreator extends DocumentCreator {
+    @Override
+    public Document createDocument() {
+        return new Spreadsheet();
+    }
+}
+
+// Client Code
+public class Main {
+    public static void main(String[] args) {
+        DocumentCreator textDocumentCreator = new TextDocumentCreator();
+        DocumentCreator spreadsheetCreator = new SpreadsheetCreator();
+
+        textDocumentCreator.openDocument();
+        spreadsheetCreator.openDocument();
+    }
+}
