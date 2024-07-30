@@ -1,0 +1,110 @@
+// Decorator Pattern: Customizing Coffee Orders
+
+// Component Interface
+interface Coffee {
+    String getDescription();
+    double cost();
+}
+
+// Concrete Component: Basic Coffee
+class BasicCoffee implements Coffee {
+    @Override
+    public String getDescription() {
+        return "Basic Coffee";
+    }
+
+    @Override
+    public double cost() {
+        return 5.00; // Base price of coffee
+    }
+}
+
+// Decorator Abstract Class
+abstract class CoffeeDecorator implements Coffee {
+    protected Coffee coffee;
+
+    public CoffeeDecorator(Coffee coffee) {
+        this.coffee = coffee;
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription();
+    }
+
+    @Override
+    public double cost() {
+        return coffee.cost();
+    }
+}
+
+// Concrete Decorator: Milk
+class MilkDecorator extends CoffeeDecorator {
+    public MilkDecorator(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Milk";
+    }
+
+    @Override
+    public double cost() {
+        return coffee.cost() + 0.50; // Cost of milk
+    }
+}
+
+// Concrete Decorator: Sugar
+class SugarDecorator extends CoffeeDecorator {
+    public SugarDecorator(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Sugar";
+    }
+
+    @Override
+    public double cost() {
+        return coffee.cost() + 0.30; // Cost of sugar
+    }
+}
+
+// Concrete Decorator: Syrup
+class SyrupDecorator extends CoffeeDecorator {
+    private String flavor;
+
+    public SyrupDecorator(Coffee coffee, String flavor) {
+        super(coffee);
+        this.flavor = flavor;
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", " + flavor + " Syrup";
+    }
+
+    @Override
+    public double cost() {
+        return coffee.cost() + 0.70; // Cost of syrup
+    }
+}
+
+// Client Code
+public class Main {
+    public static void main(String[] args) {
+        // Create a basic coffee
+        Coffee coffee = new BasicCoffee();
+
+        // Add features using decorators
+        Coffee milkCoffee = new MilkDecorator(coffee);
+        Coffee sweetMilkCoffee = new SugarDecorator(milkCoffee);
+        Coffee flavoredCoffee = new SyrupDecorator(sweetMilkCoffee, "Vanilla");
+
+        // Display the coffee description and cost
+        System.out.println(flavoredCoffee.getDescription());
+        System.out.println("Total cost: $" + flavoredCoffee.cost());
+    }
+}
