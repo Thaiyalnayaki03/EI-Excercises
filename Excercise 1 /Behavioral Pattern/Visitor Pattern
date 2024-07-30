@@ -1,0 +1,104 @@
+// Element Interface
+interface Book {
+    void accept(BookVisitor visitor);
+}
+
+// Concrete Elements
+class Fiction implements Book {
+    @Override
+    public void accept(BookVisitor visitor) {
+        visitor.visitFiction(this);
+    }
+}
+
+class NonFiction implements Book {
+    @Override
+    public void accept(BookVisitor visitor) {
+        visitor.visitNonFiction(this);
+    }
+}
+
+class Reference implements Book {
+    @Override
+    public void accept(BookVisitor visitor) {
+        visitor.visitReference(this);
+    }
+}
+
+// Visitor Interface
+interface BookVisitor {
+    void visitFiction(Fiction fiction);
+    void visitNonFiction(NonFiction nonFiction);
+    void visitReference(Reference reference);
+}
+
+// Concrete Visitor 1: Late Fee Calculator
+class LateFeeCalculator implements BookVisitor {
+    @Override
+    public void visitFiction(Fiction fiction) {
+        System.out.println("Calculating late fee for Fiction book.");
+    }
+
+    @Override
+    public void visitNonFiction(NonFiction nonFiction) {
+        System.out.println("Calculating late fee for Non-Fiction book.");
+    }
+
+    @Override
+    public void visitReference(Reference reference) {
+        System.out.println("Calculating late fee for Reference book.");
+    }
+}
+
+// Concrete Visitor 2: Summary Generator
+class SummaryGenerator implements BookVisitor {
+    @Override
+    public void visitFiction(Fiction fiction) {
+        System.out.println("Generating summary for Fiction book.");
+    }
+
+    @Override
+    public void visitNonFiction(NonFiction nonFiction) {
+        System.out.println("Generating summary for Non-Fiction book.");
+    }
+
+    @Override
+    public void visitReference(Reference reference) {
+        System.out.println("Generating summary for Reference book.");
+    }
+}
+
+// Concrete Visitor 3: Special Condition Checker
+class SpecialConditionChecker implements BookVisitor {
+    @Override
+    public void visitFiction(Fiction fiction) {
+        System.out.println("Checking special conditions for Fiction book.");
+    }
+
+    @Override
+    public void visitNonFiction(NonFiction nonFiction) {
+        System.out.println("Checking special conditions for Non-Fiction book.");
+    }
+
+    @Override
+    public void visitReference(Reference reference) {
+        System.out.println("Checking special conditions for Reference book.");
+    }
+}
+
+// Client Code
+public class Main {
+    public static void main(String[] args) {
+        Book[] books = { new Fiction(), new NonFiction(), new Reference() };
+
+        BookVisitor lateFeeCalculator = new LateFeeCalculator();
+        BookVisitor summaryGenerator = new SummaryGenerator();
+        BookVisitor specialConditionChecker = new SpecialConditionChecker();
+
+        for (Book book : books) {
+            book.accept(lateFeeCalculator);
+            book.accept(summaryGenerator);
+            book.accept(specialConditionChecker);
+        }
+    }
+}
